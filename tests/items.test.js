@@ -7,7 +7,7 @@ describe('/api/v1/items', () => {
 
   it('POST / creates a new shopping item with the current user', async () => {
     const { agent, user } = await signUpUser();
-
+    console.log(user, 'USER');
     const newItem = { description: 'eggs', qty: 12 };
     const { status, body } = await agent.post('/api/v1/items').send(newItem);
 
