@@ -41,22 +41,6 @@ describe('/api/v1/items', () => {
       qty: 12,
     });
 
-    it('UPDATE /:id should update an item', async () => {
-      const { agent } = await signUpUser();
-
-      const { body: item } = await agent.post('/api/v1/items').send({
-        description: 'apples',
-        qty: 6,
-      });
-
-      const { status, body: updated } = await agent
-        .put(`/api/v1/items/${item.id}`)
-        .send({ bought: true });
-
-      expect(status).toBe(200);
-      expect(updated).toEqual({ ...item, bought: true });
-    });
-
     //should we expect an message to say you are not signed in?
     const resp1 = await agent.get('/api/v1/items');
     console.log(resp1, 'RESP ONE'); //this response gives you the user object, including the cookie/session
