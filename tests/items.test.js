@@ -89,4 +89,28 @@ describe('/api/v1/items', () => {
     const { status } = await request(app).get('/api/v1/items'); //what does app and request do in this line?
     expect(status).toEqual(401);
   });
+
+  it('UPDATE /:id should 403 for invalid users', async () => {
+    const { agent } = await signUpUser();
+
+    const { body: item } = await agent.post('/api/v1/items').send({
+      description: 'apples',
+      qty: 6,
+    });
+
+    const { agent: agent2 } = await signUpUser({
+      email: 'user2@email.com',
+      password: 'password',
+    });
+
+    const { status, body } = await agent2
+      .put(`/api/v1/items/${item.id}`)
+      .send({ bought: true });
+
+    expect(status).toBe(403);
+    expect(body).toEqual({
+      status: 403,
+      message: 'you dont have access to this page',
+    });
+  });
 });
