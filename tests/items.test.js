@@ -94,9 +94,18 @@ describe('/api/v1/items', () => {
     const { agent } = await signUpUser();
 
     const { body: item } = await agent.post('/api/v1/items').send({
-      description: 'apples',
+      description: 'crackers',
       qty: 6,
     });
+
+    const { status, body } = await agent.delete(`/api/v1/items/${item.id}`);
+    expect(status).toBe(200);
+    expect(body).toEqual(item);
+
+    const { body: items } = await agent.get('/api/v1/items');
+
+    expect(items.length).toBe(0);
+  });
 
   it('UPDATE /:id should 403 for invalid users', async () => {
     const { agent } = await signUpUser();
