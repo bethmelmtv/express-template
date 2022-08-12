@@ -90,6 +90,14 @@ describe('/api/v1/items', () => {
     expect(status).toEqual(401);
   });
 
+  it('DELETE /:id should delete items for valid user', async () => {
+    const { agent } = await signUpUser();
+
+    const { body: item } = await agent.post('/api/v1/items').send({
+      description: 'apples',
+      qty: 6,
+    });
+
   it('UPDATE /:id should 403 for invalid users', async () => {
     const { agent } = await signUpUser();
 
